@@ -4,11 +4,16 @@ import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
-
-import java.util.HashMap;
-import java.util.List;
+import com.sky.result.PageResult;
 
 public interface EmployeeService {
+
+    /**
+     * 启用禁用员工账号
+     * @param status
+     * @param id
+     */
+    void startOrStop(Integer status, Long id);
 
     /**
      * 员工登录
@@ -17,12 +22,36 @@ public interface EmployeeService {
      */
     Employee login(EmployeeLoginDTO employeeLoginDTO);
 
-    HashMap<Object,Object> selectEmployeeByPage(EmployeePageQueryDTO employeePageQueryDTO);
+    /**
+     * 新增员工
+     * @param employeeDTO
+     */
+    void save(EmployeeDTO employeeDTO);
 
-    boolean addEmployee(EmployeeDTO employeeDTO);
+    /**
+     * 根据id查询员工
+     * @param id
+     * @return
+     */
+    Employee getById(Long id);
 
-    boolean editEmployee(EmployeeDTO employeeDTO);
 
-    Employee selectEmployeeById(Integer id);
+    /**
+     * 编辑员工信息
+     * @param employeeDTO
+     */
+    void update(EmployeeDTO employeeDTO);
+
+
+
+
+
+    /**
+     * 分页查询
+     * @param employeePageQueryDTO
+     * @return
+     */
+    PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
+
 
 }

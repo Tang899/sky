@@ -1,25 +1,22 @@
 package com.sky.controller.admin;
 
 import com.sky.constant.JwtClaimsConstant;
-import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
-import com.sky.entity.Category;
 import com.sky.entity.Employee;
 import com.sky.properties.JwtProperties;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.EmployeeService;
 import com.sky.utils.JwtUtil;
 import com.sky.vo.EmployeeLoginVO;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.beans.BeanMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,45 +32,75 @@ public class EmployeeController {
     @Autowired
     private JwtProperties jwtProperties;
 
+    /**
+     * 编辑员工信息
+     * @param employeeDTO
+     * @return
+     */
+    @PutMapping
+    @ApiOperation("编辑员工信息")
+    public Result update(@RequestBody EmployeeDTO employeeDTO){
+        log.info("编辑员工信息：{}", employeeDTO);
+        employeeService.update(employeeDTO);
+        return Result.success();
+    }
 
-    @GetMapping("{id}")
-    public Result selectEmployeeById(@PathVariable Integer id) {
-        Employee employee = employeeService.selectEmployeeById(id);
+
+    /**
+     * 根据id查询员工信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    @ApiOperation("根据id查询员工信息")
+    public Result<Employee> getById(@PathVariable Long id){
+        Employee employee = employeeService.getById(id);
         return Result.success(employee);
     }
 
 
-    @PutMapping("")
-    public Result editEmployee(@RequestBody EmployeeDTO employeeDTO) {
 
-        boolean flag = employeeService.editEmployee(employeeDTO);
-        if (flag) {
-            return Result.success(flag);
-        }
-        return Result.success(flag);
-    }
-
-    @PostMapping("")
-    public Result addEmployee(@RequestBody EmployeeDTO employeeDTO) {
-
-        boolean flag = employeeService.addEmployee(employeeDTO);
-        if (flag) {
-            return Result.success(flag);
-        }
-        return Result.success(flag);
+    /**
+     * 启用禁用员工账号
+     * @param status
+     * @param id
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation("启用禁用员工账号")
+    public Result startOrStop(@PathVariable Integer status,Long id){
+        log.info("启用禁用员工账号：{},{}",status,id);
+        employeeService.startOrStop(status,id);//后绪步骤定义
+        return Result.success();
     }
 
     /**
-     * 条件分页查询
-     *
+     * 员工分页查询
      * @param employeePageQueryDTO
      * @return
      */
     @GetMapping("/page")
-    public Result<HashMap<Object, Object>> categoryPageQueryD(EmployeePageQueryDTO employeePageQueryDTO) {
-        HashMap<Object, Object> map = employeeService.selectEmployeeByPage(employeePageQueryDTO);
-        return Result.success(map);
+    @ApiOperation("员工分页查询")
+    public Result<PageResult> page(EmployeePageQueryDTO employeePageQueryDTO){
+        log.info("员工分页查询，参数为：{}", employeePageQueryDTO);
+        PageResult pageResult = employeeService.pageQuery(employeePageQueryDTO);//后续定义
+        return Result.success(pageResult);
     }
+
+
+    /**
+     * 新增员工
+     * @param employeeDTO
+     * @return
+     */
+    @PostMapping
+    @ApiOperation("新增员工")
+    public Result save(@RequestBody EmployeeDTO employeeDTO){
+        log.info("新增员工：{}",employeeDTO);
+        employeeService.save(employeeDTO);//该方法后续步骤会定义
+        return Result.success();
+    }
+
 
     /**
      * 登录
