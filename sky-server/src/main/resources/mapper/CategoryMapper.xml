@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sky.mapper.CategoryMapper">
+
+    <select id="queryCategoryByPage" resultType="category">
+        SELECT * FROM `category`
+        <where>
+            <if test="categoryDto.name != null and categoryDto.name != ''">
+                name like concat('%',${categoryDto.name},'%')
+            </if>
+            <if test="categoryDto.type != null">
+                and type = #{categoryDto.type}
+            </if>
+        </where>
+        limit ${(categoryDto.page-1)*categoryDto.pageSize},${categoryDto.pageSize}
+    </select>
+
+
+</mapper>
