@@ -118,8 +118,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setUpdateTime(LocalDateTime.now());
 
         //设置当前记录创建人id和修改人id
-        employee.setCreateUser(10L);//目前写个假数据，后期修改
-        employee.setUpdateUser(10L);
+        employee.setCreateUser(BaseContext.getCurrentId());//目前写个假数据，后期修改
+        employee.setUpdateUser(BaseContext.getCurrentId());
 
         employeeMapper.insert(employee);//后续步骤定义
     }
