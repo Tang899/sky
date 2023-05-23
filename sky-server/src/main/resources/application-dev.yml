@@ -12,3 +12,9 @@ sky:
     access-key-id: LTAI5tGJKWuBifboPQrMQFze
     access-key-secret: PghR2lcWRjJI4UupdqLtPVXCIz9INS
     bucket-name: linkeda
+
+  redis:
+    host: 192.168.10.50
+    port: 6379
+    #password: 123456
+    database: 10
